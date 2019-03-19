@@ -1,0 +1,65 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include "tests_lib.h"
+
+int		ft_isdigit(int c);
+
+static int		unit_test_isdigit(int test)
+{
+	char const	fmt[] = "\033[0%dm%s\033[0m test ft_isdigit on char %c (%#x)";
+	char const	*status_str;
+	int			status, status_color;
+	int			ft_res, off_res;
+	int			fd = 0;
+
+	ft_res = ft_isdigit(test);
+	off_res = isdigit(test);
+	if ((ft_res != 0 && off_res != 0) || (ft_res == 0 && off_res == 0)) {
+		fd = 1;
+		status_str = SUCCESS;
+		status_color = GREEN_OCTAL;
+		status = WORKS;
+	}
+	else {
+		fd = 2;
+		status_str = FAILURE;
+		status_color = RED_OCTAL;
+		status = ERROR;
+	}
+
+#if VERBOSE == NORMAL || VERBOSE == FULL
+	dprintf(fd, fmt, status_color, status_str, test, test);
+# if VERBOSE == FULL
+	dprintf(fd, "(off: %d, mine: %d)", off_res, ft_res);
+# endif
+	dprintf(fd, "\n");
+#endif
+	return status;
+}
+
+int			test_isdigit(void)
+{
+	char const		str[] = "azAZ`{@[0123456789/:";
+	const size_t	len = strlen(str);
+	int const		tests[] = {
+		0, 0xff, 0x100, 0x1ff, 0x100 | 'a',
+		0x10000 | 'z', 0x10000 | 'A', 0x100 | 'Z'
+	};
+	int				status = WORKS;
+
+	for (size_t i = 0; i < len; i++) {
+		if (unit_test_isdigit(str[i]) == ERROR) {
+			status = ERROR;
+		}
+	}
+	for (size_t i = 0; i < TAB_LEN(tests); i++) {
+		if (unit_test_isdigit(tests[i]) == ERROR) {
+			status = ERROR;
+		}
+	}
+	return status;
+}
+
