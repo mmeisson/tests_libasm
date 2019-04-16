@@ -6,6 +6,8 @@
 
 char		*ft_strcat(char *dst, const char *src);
 
+extern int		g_verbose;
+
 static int		unit_test_strcat(char *dst, char *src)
 {
 	char const	fmt[] = "\033[0%dm%s\033[0m test ft_strcat on strings '%s' '%s'";
@@ -42,13 +44,13 @@ static int		unit_test_strcat(char *dst, char *src)
 		status = ERROR;
 	}
 
-#if VERBOSE == NORMAL || VERBOSE == FULL
-	dprintf(fd, fmt, status_color, status_str, dst, src);
-# if VERBOSE == FULL
-	dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_ft);
-# endif
-	dprintf(fd, "\n");
-#endif
+	if (g_verbose == NORMAL || g_verbose == FULL)
+	{
+		dprintf(fd, fmt, status_color, status_str, dst, src);
+		if (g_verbose == FULL)
+			dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_ft);
+		dprintf(fd, "\n");
+	}
 	if (str_off) {
 		free(str_off);
 	}

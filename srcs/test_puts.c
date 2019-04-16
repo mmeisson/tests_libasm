@@ -8,6 +8,8 @@
 
 int		ft_puts(const char *str);
 
+extern int g_verbose;
+
 char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *str))
 {
 	int		pi[2];
@@ -59,13 +61,13 @@ int		unit_test_puts(char *test, unsigned long test_size)
 		status = ERROR;
 	}
 
-#if VERBOSE == NORMAL || VERBOSE == FULL
-	dprintf(fd, fmt, status_color, status_str, test);
-# if VERBOSE == FULL
-	dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_mine);
-# endif
-	dprintf(fd, "\n");
-#endif
+	if (g_verbose == NORMAL || g_verbose == FULL)
+	{
+		dprintf(fd, fmt, status_color, status_str, test);
+		if (g_verbose == FULL)
+			dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_mine);
+		dprintf(fd, "\n");
+	}
 	if (str_off) {
 		free(str_off);
 	}

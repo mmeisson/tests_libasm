@@ -6,6 +6,8 @@
 
 void		*ft_memcpy(void *dst, const char *src, unsigned long len);
 
+extern int		g_verbose;
+
 static int		unit_test_memcpy(void *test, unsigned long len)
 {
 	char const	fmt[] = "\033[0%dm%s\033[0m test ft_memcpy on mem '%s'(size == %lu) ";
@@ -40,13 +42,13 @@ static int		unit_test_memcpy(void *test, unsigned long len)
 		status = ERROR;
 	}
 
-#if VERBOSE == NORMAL || VERBOSE == FULL
-	dprintf(fd, fmt, status_color, status_str, test, len);
-# if VERBOSE == FULL
-	dprintf(fd, "(off: '%*s', mine: '%*s')", (int)len, mem_off, (int)len, mem_ft);
-# endif
-	dprintf(fd, "\n");
-#endif
+	if (g_verbose == NORMAL || g_verbose == FULL)
+	{
+		dprintf(fd, fmt, status_color, status_str, test, len);
+		if (g_verbose == FULL)
+			dprintf(fd, "(off: '%*s', mine: '%*s')", (int)len, mem_off, (int)len, mem_ft);
+		dprintf(fd, "\n");
+	}
 	if (mem_off) {
 		free(mem_off);
 	}

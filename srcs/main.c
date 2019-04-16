@@ -11,6 +11,8 @@ struct test {
 	char const	name[48];
 };
 
+int				g_verbose = VERBOSE;
+
 static void		test(fct_test fct_test, char const * fct_name)
 {
 	if (fct_test() == ERROR) {
@@ -49,6 +51,22 @@ int		main(int argc, char **argv)
 	}
 	else {
 		for (int j = 1; j < argc; j++) {
+			if (strcmp("--verbose", argv[j]) == 0)
+			{
+				j++;
+				if (strcmp("0", argv[j]) || strcmp("MINIMAL", argv[j]))
+					g_verbose = MINIMAL;
+				else if (strcmp("1", argv[j]) || strcmp("NORMAL", argv[j]))
+					g_verbose = NORMAL;
+				else if (strcmp("2", argv[j]) || strcmp("FULL", argv[j]))
+					g_verbose = FULL;
+				else
+				{
+					dprintf(2, "Usage :: %s [--verbose MINIMAL|NORMAL|FULL] [ tests_name ]", argv[0]);
+					return 1;
+				}
+				continue;
+			}
 			for (unsigned long i = 0; i < TAB_LEN(test_conf); i++) {
 				if (strcmp(test_conf[i].name, argv[j]) == 0) {
 					test(test_conf[i].fct, test_conf[i].name);

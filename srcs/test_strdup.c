@@ -6,6 +6,8 @@
 
 char		*ft_strdup(char *str);
 
+extern int		g_verbose;
+
 static int		unit_test_strdup(char *test)
 {
 	char const	fmt[] = "\033[0%dm%s\033[0m test ft_strdup on string '%s'";
@@ -31,13 +33,13 @@ static int		unit_test_strdup(char *test)
 		status = ERROR;
 	}
 
-#if VERBOSE == NORMAL || VERBOSE == FULL
-	dprintf(fd, fmt, status_color, status_str, test);
-# if VERBOSE == FULL
-	dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_ft);
-# endif
-	dprintf(fd, "\n");
-#endif
+	if (g_verbose == NORMAL || g_verbose == FULL)
+	{
+		dprintf(fd, fmt, status_color, status_str, test);
+		if (g_verbose == FULL)
+			dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_ft);
+		dprintf(fd, "\n");
+	}
 	if (str_off) {
 		free(str_off);
 	}

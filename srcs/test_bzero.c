@@ -6,6 +6,8 @@
 
 void			ft_bzero(void *ptr, size_t len);
 
+extern int		g_verbose;
+
 static int		unit_test_bzero(int test)
 {
 	char		str[25] = {0};
@@ -20,21 +22,23 @@ static int		unit_test_bzero(int test)
 		}
 	}
 
-#if VERBOSE == FULL
-	for (int i = 0; i < len; i++) {
-		printf("'%#hhx' ", str[i]);
+	if (g_verbose == FULL)
+	{
+		for (int i = 0; i < len; i++) {
+			printf("'%#hhx' ", str[i]);
+		}
+		printf("\n");
 	}
-	printf("\n");
-#endif
 
-#if VERBOSE == NORMAL || VERBOSE == FULL
-	if (test == zeros) {
-		dprintf(1, "\033[0%dm%s\033[0m bzero %d\n", GREEN_OCTAL, SUCCESS, test);
+	if (g_verbose == NORMAL || g_verbose == FULL)
+	{
+		if (test == zeros) {
+			dprintf(1, "\033[0%dm%s\033[0m bzero %d\n", GREEN_OCTAL, SUCCESS, test);
+		}
+		else {
+			dprintf(2, "\033[0%dm%s\033[0m bzero %d\n", RED_OCTAL, FAILURE, test);
+		}
 	}
-	else {
-		dprintf(2, "\033[0%dm%s\033[0m bzero %d\n", RED_OCTAL, FAILURE, test);
-	}
-#endif
 	if (test == zeros) {
 		return WORKS;
 	}
