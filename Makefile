@@ -6,7 +6,7 @@
 #    By: mmeisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/28 14:28:00 by mmeisson          #+#    #+#              #
-#    Updated: 2017/12/02 21:15:21 by mmeisson         ###   ########.fr        #
+#    Updated: 2019/04/16 12:15:26 by mmeisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ VPATH			= ./srcs/:
 SRCS			= main.c test_bzero.c test_isalpha.c test_isdigit.c
 SRCS			+= test_isalnum.c test_isascii.c test_isprint.c
 SRCS			+= test_tolower.c test_toupper.c test_strlen.c
-SRCS			+= test_puts.c test_strcat.c test_memcpy.c test_memset
+SRCS			+= test_puts.c test_strcat.c test_memcpy.c test_memset.c
 SRCS			+= test_strdup.c
 
 INCS_PATHS		= ./incs/
@@ -43,7 +43,7 @@ LDFLAGS			= $(LIBS) -lfts
 all: $(NAME) test_cat
 
 test_cat:
-	$(CC) $^ -o test_cat -L ../ -lfts test_cat.c
+	$(CC) $^ -o test_cat $(LDFLAGS) test_cat.c
 
 $(NAME): $(OBJS)
 	$(CC) $^ -o $@ $(LDFLAGS)
