@@ -22,7 +22,7 @@ static int		unit_test_bzero(int test)
 
 	if (CHECK_REGISTERS() != 0)
 	{
-		dprintf(2, "\033[0%dm%s\033[0m bzero %d\n", RED_OCTAL, FAILURE"REGISTER", test);
+		dprintf(2, "%s bzero %d\n", STATE_STR[REGISTER], test);
 		return ERROR;
 	}
 
@@ -43,10 +43,10 @@ static int		unit_test_bzero(int test)
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
 		if (test == zeros) {
-			dprintf(1, "\033[0%dm%s\033[0m bzero %d\n", GREEN_OCTAL, SUCCESS, test);
+			dprintf(1, "%s bzero %d\n", STATE_STR[WORKS], test);
 		}
 		else {
-			dprintf(2, "\033[0%dm%s\033[0m bzero %d\n", RED_OCTAL, FAILURE, test);
+			dprintf(2, "%s bzero %d\n", STATE_STR[ERROR], test);
 		}
 	}
 	if (test == zeros) {
@@ -62,7 +62,7 @@ int			test_bzero(void)
 	int		status = WORKS;
 
 	for (int i = 0; i < 24; i++) {
-		if (unit_test_bzero(i) == ERROR) {
+		if (unit_test_bzero(i) != WORKS) {
 			status = ERROR;
 		}
 	}

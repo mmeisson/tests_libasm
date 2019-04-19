@@ -40,9 +40,8 @@ int		unit_test_puts(char *test, unsigned long test_size)
 {
 	int			diff;
 	int			fd;
-	char const	fmt[] = "\033[0%dm%s\033[0m test ft_puts on string '%s'";
-	char const	*status_str;
-	int			status, status_color;
+	char const	fmt[] = "%s test ft_puts on string '%s'";
+	int			status;
 	char		*str_off, *str_mine;
 
 	str_off = get_puts(test, test_size, puts);
@@ -50,20 +49,16 @@ int		unit_test_puts(char *test, unsigned long test_size)
 	diff = strcmp(str_off, str_mine);
 	if (diff == 0) {
 		fd = 1;
-		status_str = SUCCESS;
-		status_color = GREEN_OCTAL;
 		status = WORKS;
 	}
 	else {
 		fd = 2;
-		status_str = FAILURE;
-		status_color = RED_OCTAL;
 		status = ERROR;
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
-		dprintf(fd, fmt, status_color, status_str, test);
+		dprintf(fd, fmt, STATE_STR[status], test);
 		if (g_verbose == FULL)
 			dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_mine);
 		dprintf(fd, "\n");
@@ -97,7 +92,7 @@ int		test_puts(void)
 	};
 
 	for (unsigned long i = 0; i < TAB_LEN(units); i++) {
-		if (unit_test_puts(units[i].str, units[i].len) == ERROR) {
+		if (unit_test_puts(units[i].str, units[i].len) != WORKS) {
 			status = ERROR;
 		}
 	}

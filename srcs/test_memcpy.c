@@ -10,9 +10,8 @@ extern int		g_verbose;
 
 static int		unit_test_memcpy(void *test, unsigned long len)
 {
-	char const	fmt[] = "\033[0%dm%s\033[0m test ft_memcpy on mem '%s'(size == %lu) ";
-	char const	*status_str;
-	int			status, status_color;
+	char const	fmt[] = "%s test ft_memcpy on mem '%s'(size == %lu) ";
+	int			status;
 	char		*mem_ft = NULL, *mem_off = NULL;
 	char		*res;
 	int			diff;
@@ -29,9 +28,7 @@ static int		unit_test_memcpy(void *test, unsigned long len)
 	if (CHECK_REGISTERS() != 0)
 	{
 		fd = 2;
-		status_str = FAILURE "REGISTER";
-		status_color = RED_OCTAL;
-		status = ERROR;
+		status = REGISTER;
 	}
 	else
 	{
@@ -39,27 +36,21 @@ static int		unit_test_memcpy(void *test, unsigned long len)
 
 		if (res != mem_ft) {
 			fd = 2;
-			status_str = FAILURE " ret does not match";
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 		else if (diff == 0) {
 			fd = 1;
-			status_str = SUCCESS;
-			status_color = GREEN_OCTAL;
 			status = WORKS;
 		}
 		else {
 			fd = 2;
-			status_str = FAILURE;
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
-		dprintf(fd, fmt, status_color, status_str, test, len);
+		dprintf(fd, fmt, STATE_STR[status], test, len);
 		if (g_verbose == FULL)
 			dprintf(fd, "(off: '%*s', mine: '%*s')", (int)len, mem_off, (int)len, mem_ft);
 		dprintf(fd, "\n");
@@ -85,7 +76,7 @@ int			test_memcpy(void)
 	int status = WORKS;
 
 	for (unsigned long i = 0; i < TAB_LEN(strs); i++) {
-		if (unit_test_memcpy(strs[i], strlen(strs[i]) + 1) == ERROR) {
+		if (unit_test_memcpy(strs[i], strlen(strs[i]) + 1) != WORKS) {
 			status = ERROR;
 		}
 	}

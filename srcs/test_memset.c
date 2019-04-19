@@ -10,9 +10,8 @@ extern int		g_verbose;
 
 static int		unit_test_memset(unsigned long len)
 {
-	char const	fmt[] = "\033[0%dm%s\033[0m test ft_memset on size == %lu ";
-	char const	*status_str;
-	int			status, status_color;
+	char const	fmt[] = "%s test ft_memset on size == %lu ";
+	int			status;
 	char		mem_ft[len + 15], mem_off[len + 15];
 	void		*res;
 	int			diff;
@@ -31,9 +30,7 @@ static int		unit_test_memset(unsigned long len)
 	if (CHECK_REGISTERS() != 0)
 	{
 		fd = 2;
-		status_str = FAILURE "REGISTER";
-		status_color = RED_OCTAL;
-		status = ERROR;
+		status = REGISTER;
 	}
 	else
 	{
@@ -41,27 +38,21 @@ static int		unit_test_memset(unsigned long len)
 
 		if (res != mem_ft) {
 			fd = 2;
-			status_str = FAILURE " res does not match";
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 		else if (diff == 0) {
 			fd = 1;
-			status_str = SUCCESS;
-			status_color = GREEN_OCTAL;
 			status = WORKS;
 		}
 		else {
 			fd = 2;
-			status_str = FAILURE;
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
-		dprintf(fd, fmt, status_color, status_str, len);
+		dprintf(fd, fmt, STATE_STR[status], len);
 		if (g_verbose == FULL)
 			dprintf(fd, "(off: '%s', mine: '%s')", mem_off, mem_ft);
 		dprintf(fd, "\n");
@@ -74,7 +65,7 @@ int			test_memset(void)
 	int status = WORKS;
 
 	for (unsigned long i = 0; i < 32; i++) {
-		if (unit_test_memset(i) == ERROR) {
+		if (unit_test_memset(i) != WORKS) {
 			status = ERROR;
 		}
 	}

@@ -10,9 +10,8 @@ extern int		g_verbose;
 
 static int		unit_test_strcat(char *dst, char *src)
 {
-	char const	fmt[] = "\033[0%dm%s\033[0m test ft_strcat on strings '%s' '%s'";
-	char const	*status_str;
-	int			status, status_color;
+	char const	fmt[] = "%s test ft_strcat on strings '%s' '%s'";
+	int			status;
 	char		*str_ft = NULL, *str_off = NULL;
 	char		*res;
 	int			diff;
@@ -31,9 +30,7 @@ static int		unit_test_strcat(char *dst, char *src)
 	if (CHECK_REGISTERS() != 0)
 	{
 		fd = 2;
-		status_str = FAILURE "REGISTER";
-		status_color = RED_OCTAL;
-		status = ERROR;
+		status = REGISTER;
 	}
 	else
 	{
@@ -41,27 +38,21 @@ static int		unit_test_strcat(char *dst, char *src)
 
 		if (res != str_ft) {
 			fd = 2;
-			status_str = FAILURE " res does not match";
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 		else if (diff == 0) {
 			fd = 1;
-			status_str = SUCCESS;
-			status_color = GREEN_OCTAL;
 			status = WORKS;
 		}
 		else {
 			fd = 2;
-			status_str = FAILURE;
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
-		dprintf(fd, fmt, status_color, status_str, dst, src);
+		dprintf(fd, fmt, STATE_STR[status], dst, src);
 		if (g_verbose == FULL)
 			dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_ft);
 		dprintf(fd, "\n");
@@ -100,7 +91,7 @@ int			test_strcat(void)
 	int status = WORKS;
 
 	for (unsigned long i = 0; i < TAB_LEN(strs); i++) {
-		if (unit_test_strcat(strs[i].dst, strs[i].src) == ERROR) {
+		if (unit_test_strcat(strs[i].dst, strs[i].src) != WORKS) {
 			status = ERROR;
 		}
 	}

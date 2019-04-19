@@ -13,10 +13,9 @@ static int	test_unit_strlen(int test)
 	unsigned long	ft_res;
 	unsigned long	off_res;
 	char			str[test + 1];
-	char const		fmt[] = "\033[0%dm%s\033[0m test ft_strlen with str %d long";
+	char const		fmt[] = "%s test ft_strlen with str %d long";
 	int				fd;
-	char const		*status_str;
-	int				status_color, status;
+	int				status;
 
 	off_res = strlen(str);
 
@@ -26,26 +25,20 @@ static int	test_unit_strlen(int test)
 	if (CHECK_REGISTERS() != 0)
 	{
 		fd = 2;
-		status_str = FAILURE "REGISTER";
-		status_color = RED_OCTAL;
-		status = ERROR;
+		status = REGISTER;
 	}
 	else if (ft_res == off_res) {
 		fd = 1;
-		status_str = SUCCESS;
-		status_color = GREEN_OCTAL;
 		status = WORKS;
 	}
 	else {
 		fd = 2;
-		status_str = FAILURE;
-		status_color = RED_OCTAL;
 		status = ERROR;
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
-		dprintf(fd, fmt, status_color, status_str, test);
+		dprintf(fd, fmt, STATE_STR[status], test);
 		if (g_verbose == FULL)
 			dprintf(fd, "(off: %lu, mine: %lu)", off_res, ft_res);
 		dprintf(fd, "\n");
@@ -60,7 +53,7 @@ int		test_strlen(void)
 	int		status = WORKS;
 
 	for (int i = 0; i < 32; i++) {
-		if (test_unit_strlen(i) == ERROR) {
+		if (test_unit_strlen(i) != WORKS) {
 			status = ERROR;
 		}
 	}

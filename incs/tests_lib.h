@@ -2,8 +2,23 @@
 #ifndef TESTS_LIB_H
 # define TESTS_LIB_H
 
-# define WORKS 0
-# define ERROR 1
+typedef enum
+{
+	WORKS,
+#define WORKS_STR		"\033[032m[WORKS]\033[0m"
+
+	ERROR,
+#define ERROR_STR		"\033[033m[ERROR]\033[0m"
+
+	REGISTER,
+#define REGISTER_STR	"\033[031m[REGV]\033[0m"
+}		e_state;
+
+static const char *STATE_STR[3] = {
+	[WORKS] = WORKS_STR,
+	[ERROR] = ERROR_STR,
+	[REGISTER] = REGISTER_STR,
+};
 
 /*
  * Verbose == MINIMAL : Print only test's serie results

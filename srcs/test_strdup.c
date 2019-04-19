@@ -11,9 +11,8 @@ extern int		g_verbose;
 
 static int		unit_test_strdup(char *test)
 {
-	char const	fmt[] = "\033[0%dm%s\033[0m test ft_strdup on string '%s'";
-	char const	*status_str;
-	int			status, status_color;
+	char const	fmt[] = "%s test ft_strdup on string '%s'";
+	int			status;
 	char		*str_ft, *str_off;
 	int			diff;
 	int			fd;
@@ -25,9 +24,7 @@ static int		unit_test_strdup(char *test)
 	if (CHECK_REGISTERS() != 0)
 	{
 		fd = 2;
-		status_str = FAILURE "REGISTER";
-		status_color = RED_OCTAL;
-		status = ERROR;
+		status = REGISTER;
 	}
 	else
 	{
@@ -35,21 +32,17 @@ static int		unit_test_strdup(char *test)
 
 		if (diff == 0) {
 			fd = 1;
-			status_str = SUCCESS;
-			status_color = GREEN_OCTAL;
 			status = WORKS;
 		}
 		else {
 			fd = 2;
-			status_str = FAILURE;
-			status_color = RED_OCTAL;
 			status = ERROR;
 		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)
 	{
-		dprintf(fd, fmt, status_color, status_str, test);
+		dprintf(fd, fmt, STATE_STR[status], test);
 		if (g_verbose == FULL)
 			dprintf(fd, "(off: '%s', mine: '%s')", str_off, str_ft);
 		dprintf(fd, "\n");
@@ -75,7 +68,7 @@ int			test_strdup(void)
 	int status = WORKS;
 
 	for (unsigned long i = 0; i < TAB_LEN(strs); i++) {
-		if (unit_test_strdup(strs[i]) == ERROR) {
+		if (unit_test_strdup(strs[i]) != WORKS) {
 			status = ERROR;
 		}
 	}
