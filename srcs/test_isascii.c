@@ -50,15 +50,16 @@ static int		unit_test_isascii(int test)
 int			test_isascii(void)
 {
 	int				status = WORKS;
+	int				test_status;
 
 	for (int i = -10; i < 127; i++) {
-		if (unit_test_isascii(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_isascii(i)) > status) {
+			status = test_status;
 		}
 	}
 	for (int i = 0x010000; i < 0x010100; i++) {
-		if (unit_test_isascii(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_isascii(i)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

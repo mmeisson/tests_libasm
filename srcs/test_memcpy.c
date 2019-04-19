@@ -74,10 +74,11 @@ int			test_memcpy(void)
 		"abaabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcbcc",
 	};
 	int status = WORKS;
+	int test_status;
 
 	for (unsigned long i = 0; i < TAB_LEN(strs); i++) {
-		if (unit_test_memcpy(strs[i], strlen(strs[i]) + 1) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_memcpy(strs[i], strlen(strs[i]) + 1)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

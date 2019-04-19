@@ -89,10 +89,11 @@ int			test_strcat(void)
 		{"", "Une longue chaine de char"},
 	};
 	int status = WORKS;
+	int	test_status;
 
 	for (unsigned long i = 0; i < TAB_LEN(strs); i++) {
-		if (unit_test_strcat(strs[i].dst, strs[i].src) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_strcat(strs[i].dst, strs[i].src)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

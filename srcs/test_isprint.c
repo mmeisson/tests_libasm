@@ -48,15 +48,16 @@ static int		unit_test_isprint(int test)
 int			test_isprint(void)
 {
 	int				status = WORKS;
+	int				test_status;
 
 	for (int i = -10; i <= 127; i++) {
-		if (unit_test_isprint(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_isprint(i)) > status) {
+			status = test_status;
 		}
 	}
 	for (int i = 0x010000; i < 0x010100; i++) {
-		if (unit_test_isprint(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_isprint(i)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

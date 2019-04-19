@@ -66,10 +66,11 @@ int			test_strdup(void)
 		"abaabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcbcc",
 	};
 	int status = WORKS;
+	int	test_status;
 
 	for (unsigned long i = 0; i < TAB_LEN(strs); i++) {
-		if (unit_test_strdup(strs[i]) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_strdup(strs[i])) > status) {
+			status = test_status;
 		}
 	}
 	return status;

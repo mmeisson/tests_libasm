@@ -63,10 +63,11 @@ static int		unit_test_memset(unsigned long len)
 int			test_memset(void)
 {
 	int status = WORKS;
+	int	test_status;
 
 	for (unsigned long i = 0; i < 32; i++) {
-		if (unit_test_memset(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_memset(i)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

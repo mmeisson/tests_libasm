@@ -90,10 +90,11 @@ int		test_puts(void)
 		{NULL, 0},
 #endif
 	};
+	int			test_status;
 
 	for (unsigned long i = 0; i < TAB_LEN(units); i++) {
-		if (unit_test_puts(units[i].str, units[i].len) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_puts(units[i].str, units[i].len)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

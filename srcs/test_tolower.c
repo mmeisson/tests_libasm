@@ -48,15 +48,16 @@ static int		unit_test_tolower(int test)
 int			test_tolower(void)
 {
 	int				status = WORKS;
+	int				test_status;
 
 	for (int i = -10; i < 127; i++) {
-		if (unit_test_tolower(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_tolower(i)) > status) {
+			status = test_status;
 		}
 	}
 	for (int i = 0x010000; i < 0x010100; i++) {
-		if (unit_test_tolower(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_tolower(i)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

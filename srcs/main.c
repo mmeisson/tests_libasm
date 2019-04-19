@@ -15,14 +15,8 @@ int				g_verbose = VERBOSE;
 
 static void		test(fct_test fct_test, char const * fct_name)
 {
-	if (fct_test() == ERROR) {
-		dprintf(2, "\033[0%dm%s\033[0m: %s\n\n",
-				RED_OCTAL, FAILURE, fct_name);
-	}
-	else {
-		dprintf(1, "\033[0%dm%s\033[0m: %s\n\n",
-				GREEN_OCTAL, SUCCESS, fct_name);
-	}
+	dprintf(2, "%s: %s\n\n",
+			STATE_STR[fct_test()], fct_name);
 }
 
 int		main(int argc, char **argv)

@@ -60,10 +60,11 @@ static int		unit_test_bzero(int test)
 int			test_bzero(void)
 {
 	int		status = WORKS;
+	int		test_status;
 
 	for (int i = 0; i < 24; i++) {
-		if (unit_test_bzero(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_bzero(i)) > status) {
+			status = test_status;
 		}
 	}
 	return status;

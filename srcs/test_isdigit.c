@@ -56,15 +56,16 @@ int			test_isdigit(void)
 		0x10000 | 'z', 0x10000 | 'A', 0x100 | 'Z'
 	};
 	int				status = WORKS;
+	int				test_status;
 
 	for (size_t i = 0; i < len; i++) {
-		if (unit_test_isdigit(str[i]) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_isdigit(str[i])) > status) {
+			status = test_status;
 		}
 	}
 	for (size_t i = 0; i < TAB_LEN(tests); i++) {
-		if (unit_test_isdigit(tests[i]) != WORKS) {
-			status = ERROR;
+		if ((test_status = unit_test_isdigit(str[i])) > status) {
+			status = test_status;
 		}
 	}
 	return status;

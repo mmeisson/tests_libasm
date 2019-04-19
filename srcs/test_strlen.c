@@ -51,10 +51,11 @@ static int	test_unit_strlen(int test)
 int		test_strlen(void)
 {
 	int		status = WORKS;
+	int		test_status;
 
 	for (int i = 0; i < 32; i++) {
-		if (test_unit_strlen(i) != WORKS) {
-			status = ERROR;
+		if ((test_status = test_unit_strlen(i)) > status) {
+			status = test_status;
 		}
 	}
 	return status;
