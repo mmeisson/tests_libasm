@@ -17,10 +17,12 @@
 # define VERBOSE NORMAL
 
 # define GREEN_OCTAL 32
+# define YELLOW_OCTAL 33
 # define RED_OCTAL 31
 
-# define SUCCESS "[SUCCESS]"
-# define FAILURE "[FAILURE]"
+# define SUCCESS	"[SUCCESS]"
+# define FAILURE	"[FAILURE]"
+# define ERR		"[ERROR]"
 
 # define TAB_LEN(tab) (sizeof(tab) / sizeof(tab[0]))
 

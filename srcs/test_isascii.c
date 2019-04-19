@@ -7,6 +7,8 @@
 
 int		ft_isascii(int c);
 
+extern int		g_verbose;
+
 static int		unit_test_isascii(int test)
 {
 	char const	fmt[] = "\033[0%dm%s\033[0m test ft_isascii on char %c (%#x)";
@@ -30,13 +32,15 @@ static int		unit_test_isascii(int test)
 		status = ERROR;
 	}
 
-#if VERBOSE == NORMAL || VERBOSE == FULL
-	dprintf(fd, fmt, status_color, status_str, test, test);
-# if VERBOSE == FULL
-	dprintf(fd, "(off: %d, mine: %d)", off_res, ft_res);
-# endif
-	dprintf(fd, "\n");
-#endif
+	if (g_verbose == NORMAL || g_verbose == FULL)
+	{
+		dprintf(fd, fmt, status_color, status_str, test, test);
+		if (g_verbose == FULL)
+		{
+			dprintf(fd, "(off: %d, mine: %d)", off_res, ft_res);
+		}
+		dprintf(fd, "\n");
+	}
 	return status;
 }
 

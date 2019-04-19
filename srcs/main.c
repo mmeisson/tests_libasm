@@ -43,35 +43,61 @@ int		main(int argc, char **argv)
 		{test_memset, "test_memset"},
 		{test_strdup, "test_strdup"},
 	};
+	int		j = 1;
 
-	if (argc == 1) {
+	for (j = 1; j < argc; j++) {
+
+		/*
+		 * Arg parse
+		 */
+
+		if (strcmp("--help", argv[j]) == 0) {
+			dprintf(2, "Usage :: %s [--help] [--verbose MINIMAL|NORMAL|FULL] [ tests_name ]\n", argv[0]);
+			return 0;
+		}
+
+		else if (strcmp("--verbose", argv[j]) == 0) {
+			j++;
+			if (j >= argc) {
+				dprintf(2, "Usage :: %s [--help] [--verbose MINIMAL|NORMAL|FULL] [ tests_name ]\n", argv[0]);
+				return 1;
+			}
+			if (strcmp("0", argv[j]) == 0 || strcmp("MINIMAL", argv[j]) == 0) {
+				g_verbose = MINIMAL;
+			}
+			else if (strcmp("1", argv[j]) == 0 || strcmp("NORMAL", argv[j]) == 0) {
+				g_verbose = NORMAL;
+			}
+			else if (strcmp("2", argv[j]) == 0 || strcmp("FULL", argv[j]) == 0) {
+				g_verbose = FULL;
+			}
+			else {
+				dprintf(2, "Usage :: %s [--verbose MINIMAL|NORMAL|FULL] [ tests_name ]\n", argv[0]);
+				return 1;
+			}
+		}
+		else {
+			break ;
+		}
+	}
+
+	if (j >= argc) {
 		for (unsigned long i = 0; i < TAB_LEN(test_conf); i++) {
 			test(test_conf[i].fct, test_conf[i].name);
 		}
 	}
 	else {
-		for (int j = 1; j < argc; j++) {
-			if (strcmp("--verbose", argv[j]) == 0)
-			{
-				j++;
-				if (strcmp("0", argv[j]) || strcmp("MINIMAL", argv[j]))
-					g_verbose = MINIMAL;
-				else if (strcmp("1", argv[j]) || strcmp("NORMAL", argv[j]))
-					g_verbose = NORMAL;
-				else if (strcmp("2", argv[j]) || strcmp("FULL", argv[j]))
-					g_verbose = FULL;
-				else
-				{
-					dprintf(2, "Usage :: %s [--verbose MINIMAL|NORMAL|FULL] [ tests_name ]", argv[0]);
-					return 1;
-				}
-				continue;
-			}
-			for (unsigned long i = 0; i < TAB_LEN(test_conf); i++) {
+		for (; j < argc; j++) {
+			unsigned long i;
+			for (i = 0; i < TAB_LEN(test_conf); i++) {
 				if (strcmp(test_conf[i].name, argv[j]) == 0) {
 					test(test_conf[i].fct, test_conf[i].name);
 					break ;
 				}
+			}
+			if (i == TAB_LEN(test_conf)) {
+				dprintf(2, "\033[0%dm%s\033[0m: %s :: test not found\n\n",
+					YELLOW_OCTAL, ERR, argv[j]);
 			}
 		}
 	}
