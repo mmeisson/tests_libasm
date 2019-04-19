@@ -6,7 +6,7 @@
 #    By: mmeisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/28 14:28:00 by mmeisson          #+#    #+#              #
-#    Updated: 2019/04/16 12:15:26 by mmeisson         ###   ########.fr        #
+#    Updated: 2019/04/19 18:26:21 by mmeisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			= libfts_test
 
 CC				= clang
 
-override CFLAGS	+= -MD -Wall -Werror -Wextra -Ofast -Wno-unused-variable
+override CFLAGS	+= -MD -Wall -Werror -Wextra -Wno-unused-variable -g
 
 VPATH			= ./srcs/:
 

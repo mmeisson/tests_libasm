@@ -22,26 +22,41 @@ static int		unit_test_memset(unsigned long len)
 	memset(mem_off, '0', len + 14);
 	mem_ft[len + 14] = 0;
 	mem_off[len + 14] = 0;
+
 	memset(mem_off, 'a', len);
+
+	SAVE_REGISTERS();
 	res = ft_memset(mem_ft, 'a', len);
-	diff = memcmp(mem_off, mem_ft, len);
-	if (res != mem_ft) {
+
+	if (CHECK_REGISTERS() != 0)
+	{
 		fd = 2;
-		status_str = FAILURE " res does not match";
+		status_str = FAILURE "REGISTER";
 		status_color = RED_OCTAL;
 		status = ERROR;
 	}
-	else if (diff == 0) {
-		fd = 1;
-		status_str = SUCCESS;
-		status_color = GREEN_OCTAL;
-		status = WORKS;
-	}
-	else {
-		fd = 2;
-		status_str = FAILURE;
-		status_color = RED_OCTAL;
-		status = ERROR;
+	else
+	{
+		diff = memcmp(mem_off, mem_ft, len);
+
+		if (res != mem_ft) {
+			fd = 2;
+			status_str = FAILURE " res does not match";
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
+		else if (diff == 0) {
+			fd = 1;
+			status_str = SUCCESS;
+			status_color = GREEN_OCTAL;
+			status = WORKS;
+		}
+		else {
+			fd = 2;
+			status_str = FAILURE;
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)

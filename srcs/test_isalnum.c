@@ -17,9 +17,19 @@ static int		unit_test_isalnum(int test)
 	int			ft_res, off_res;
 	int			fd = 0;
 
-	ft_res = ft_isalnum(test);
 	off_res = isalnum(test);
-	if ((ft_res != 0 && off_res != 0) || (ft_res == 0 && off_res == 0)) {
+
+	SAVE_REGISTERS();
+	ft_res = ft_isalnum(test);
+
+	if (CHECK_REGISTERS() != 0)
+	{
+		fd = 2;
+		status_str = FAILURE "REGISTER";
+		status_color = RED_OCTAL;
+		status = ERROR;
+	}
+	else if ((ft_res != 0 && off_res != 0) || (ft_res == 0 && off_res == 0)) {
 		fd = 1;
 		status_str = SUCCESS;
 		status_color = GREEN_OCTAL;

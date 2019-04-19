@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "tests_lib.h"
 
 unsigned long	ft_strlen(const char *str);
@@ -17,9 +18,19 @@ static int	test_unit_strlen(int test)
 	char const		*status_str;
 	int				status_color, status;
 
-	ft_res = ft_strlen(str);
 	off_res = strlen(str);
-	if (ft_res == off_res) {
+
+	SAVE_REGISTERS();
+	ft_res = ft_strlen(str);
+
+	if (CHECK_REGISTERS() != 0)
+	{
+		fd = 2;
+		status_str = FAILURE "REGISTER";
+		status_color = RED_OCTAL;
+		status = ERROR;
+	}
+	else if (ft_res == off_res) {
 		fd = 1;
 		status_str = SUCCESS;
 		status_color = GREEN_OCTAL;

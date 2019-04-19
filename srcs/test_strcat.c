@@ -22,26 +22,41 @@ static int		unit_test_strcat(char *dst, char *src)
 	str_off = malloc(strlen(dst) + strlen(src) + 1);
 	strcpy(str_ft, dst);
 	strcpy(str_off, dst);
-	res = ft_strcat(str_ft, src);
+
 	strcat(str_off, src);
-	diff = strcmp(str_off, str_ft);
-	if (res != str_ft) {
+
+	SAVE_REGISTERS();
+	res = ft_strcat(str_ft, src);
+
+	if (CHECK_REGISTERS() != 0)
+	{
 		fd = 2;
-		status_str = FAILURE " res does not match";
+		status_str = FAILURE "REGISTER";
 		status_color = RED_OCTAL;
 		status = ERROR;
 	}
-	if (diff == 0) {
-		fd = 1;
-		status_str = SUCCESS;
-		status_color = GREEN_OCTAL;
-		status = WORKS;
-	}
-	else {
-		fd = 2;
-		status_str = FAILURE;
-		status_color = RED_OCTAL;
-		status = ERROR;
+	else
+	{
+		diff = strcmp(str_off, str_ft);
+
+		if (res != str_ft) {
+			fd = 2;
+			status_str = FAILURE " res does not match";
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
+		else if (diff == 0) {
+			fd = 1;
+			status_str = SUCCESS;
+			status_color = GREEN_OCTAL;
+			status = WORKS;
+		}
+		else {
+			fd = 2;
+			status_str = FAILURE;
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)

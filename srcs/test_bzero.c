@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include "tests_lib.h"
 
 void			ft_bzero(void *ptr, size_t len);
@@ -15,7 +16,16 @@ static int		unit_test_bzero(int test)
 	int			zeros = 0;
 
 	memset(str, 'a', len);
+
+	SAVE_REGISTERS();
 	ft_bzero(str, test);
+
+	if (CHECK_REGISTERS() != 0)
+	{
+		dprintf(2, "\033[0%dm%s\033[0m bzero %d\n", RED_OCTAL, FAILURE"REGISTER", test);
+		return ERROR;
+	}
+
 	for (int i = 0; i < len; i++) {
 		if (str[i] == 0) {
 			zeros++;

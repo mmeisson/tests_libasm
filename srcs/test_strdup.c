@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 char		*ft_strdup(char *str);
 
@@ -17,20 +18,33 @@ static int		unit_test_strdup(char *test)
 	int			diff;
 	int			fd;
 
-	str_ft = ft_strdup(test);
 	str_off = strdup(test);
-	diff = strcmp(str_off, str_ft);
-	if (diff == 0) {
-		fd = 1;
-		status_str = SUCCESS;
-		status_color = GREEN_OCTAL;
-		status = WORKS;
-	}
-	else {
+	SAVE_REGISTERS();
+	str_ft = ft_strdup(test);
+
+	if (CHECK_REGISTERS() != 0)
+	{
 		fd = 2;
-		status_str = FAILURE;
+		status_str = FAILURE "REGISTER";
 		status_color = RED_OCTAL;
 		status = ERROR;
+	}
+	else
+	{
+		diff = strcmp(str_off, str_ft);
+
+		if (diff == 0) {
+			fd = 1;
+			status_str = SUCCESS;
+			status_color = GREEN_OCTAL;
+			status = WORKS;
+		}
+		else {
+			fd = 2;
+			status_str = FAILURE;
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)

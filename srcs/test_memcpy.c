@@ -20,26 +20,41 @@ static int		unit_test_memcpy(void *test, unsigned long len)
 
 	mem_ft = malloc(len);
 	mem_off = malloc(len);
+
 	memcpy(mem_off, test, len);
+
+	SAVE_REGISTERS();
 	res = ft_memcpy(mem_ft, test, len);
-	diff = memcmp(mem_off, mem_ft, len);
-	if (res != mem_ft) {
+
+	if (CHECK_REGISTERS() != 0)
+	{
 		fd = 2;
-		status_str = FAILURE " ret does not match";
+		status_str = FAILURE "REGISTER";
 		status_color = RED_OCTAL;
 		status = ERROR;
 	}
-	else if (diff == 0) {
-		fd = 1;
-		status_str = SUCCESS;
-		status_color = GREEN_OCTAL;
-		status = WORKS;
-	}
-	else {
-		fd = 2;
-		status_str = FAILURE;
-		status_color = RED_OCTAL;
-		status = ERROR;
+	else
+	{
+		diff = memcmp(mem_off, mem_ft, len);
+
+		if (res != mem_ft) {
+			fd = 2;
+			status_str = FAILURE " ret does not match";
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
+		else if (diff == 0) {
+			fd = 1;
+			status_str = SUCCESS;
+			status_color = GREEN_OCTAL;
+			status = WORKS;
+		}
+		else {
+			fd = 2;
+			status_str = FAILURE;
+			status_color = RED_OCTAL;
+			status = ERROR;
+		}
 	}
 
 	if (g_verbose == NORMAL || g_verbose == FULL)

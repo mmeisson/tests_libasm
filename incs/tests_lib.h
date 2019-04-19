@@ -26,6 +26,46 @@
 
 # define TAB_LEN(tab) (sizeof(tab) / sizeof(tab[0]))
 
+
+# define SAVE_REGISTERS() \
+	uint64_t _A; \
+	uint64_t _B; \
+	uint64_t _C; \
+	uint64_t _D; \
+	uint64_t _E; \
+	asm("mov %%r12,%0" : "=r"(_A)); \
+	asm("mov %%r13,%0" : "=r"(_B)); \
+	asm("mov %%r14,%0" : "=r"(_C)); \
+	asm("mov %%r15,%0" : "=r"(_D)); \
+	asm("mov %%rbx,%0" : "=r"(_E));
+
+# define CHECK_REGISTERS() ({ \
+	uint64_t _AA; \
+	uint64_t _BB; \
+	uint64_t _CC; \
+	uint64_t _DD; \
+	uint64_t _EE; \
+	uint64_t _RES = 0; \
+	asm("mov %%r12,%0" : "=r"(_AA)); \
+	asm("mov %%r13,%0" : "=r"(_BB)); \
+	asm("mov %%r14,%0" : "=r"(_CC)); \
+	asm("mov %%r15,%0" : "=r"(_DD)); \
+	asm("mov %%rbx,%0" : "=r"(_EE)); \
+	if (_A != _AA) \
+		_RES |= (1 << 0); \
+	if (_B != _BB) \
+		_RES |= (1 << 1); \
+	if (_C != _CC) \
+		_RES |= (1 << 2); \
+	if (_D != _DD) \
+		_RES |= (1 << 3); \
+	if (_E != _EE) \
+		_RES |= (1 << 4); \
+	_RES; \
+})
+
+
+
 int		test_bzero(void);
 int		test_isupper(void);
 int		test_islower(void);
