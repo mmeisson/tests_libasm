@@ -13,10 +13,12 @@ struct test {
 
 int				g_verbose = VERBOSE;
 
-static void		test(fct_test fct_test, char const * fct_name)
+static int		test(fct_test fct_test, char const * fct_name)
 {
+	int		res = fct_test();
 	dprintf(2, "%s: %s\n\n",
-			STATE_STR[fct_test()], fct_name);
+			STATE_STR[res], fct_name);
+	return res;
 }
 
 int		main(int argc, char **argv)
@@ -38,6 +40,7 @@ int		main(int argc, char **argv)
 		{test_strdup, "test_strdup"},
 	};
 	int		j = 1;
+	int		res = 0;
 
 	for (j = 1; j < argc; j++) {
 
@@ -67,7 +70,7 @@ int		main(int argc, char **argv)
 			}
 			else {
 				dprintf(2, "Usage :: %s [--verbose MINIMAL|NORMAL|FULL] [ tests_name ]\n", argv[0]);
-				return 1;
+				return -1;
 			}
 		}
 		else {
@@ -77,7 +80,7 @@ int		main(int argc, char **argv)
 
 	if (j >= argc) {
 		for (unsigned long i = 0; i < TAB_LEN(test_conf); i++) {
-			test(test_conf[i].fct, test_conf[i].name);
+			res += test(test_conf[i].fct, test_conf[i].name);
 		}
 	}
 	else {
@@ -85,7 +88,7 @@ int		main(int argc, char **argv)
 			unsigned long i;
 			for (i = 0; i < TAB_LEN(test_conf); i++) {
 				if (strcmp(test_conf[i].name, argv[j]) == 0) {
-					test(test_conf[i].fct, test_conf[i].name);
+					res += test(test_conf[i].fct, test_conf[i].name);
 					break ;
 				}
 			}
@@ -95,5 +98,5 @@ int		main(int argc, char **argv)
 			}
 		}
 	}
-	return EXIT_SUCCESS;
+	return res;
 }
