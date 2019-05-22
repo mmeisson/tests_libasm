@@ -99,5 +99,6 @@ int		test_strcat(void);
 int		test_memcpy(void);
 int		test_memset(void);
 int		test_strdup(void);
+int		test_hard_loop(void);
 
 #endif

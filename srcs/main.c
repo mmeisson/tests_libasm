@@ -38,6 +38,7 @@ int		main(int argc, char **argv)
 		{test_memcpy, "test_memcpy"},
 		{test_memset, "test_memset"},
 		{test_strdup, "test_strdup"},
+		{test_hard_loop, "test_hard_loop"},
 	};
 	int		j = 1;
 	int		res = 0;

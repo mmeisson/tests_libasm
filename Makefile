@@ -6,7 +6,7 @@
 #    By: mmeisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/28 14:28:00 by mmeisson          #+#    #+#              #
-#    Updated: 2019/04/19 18:26:21 by mmeisson         ###   ########.fr        #
+#    Updated: 2019/05/22 15:52:29 by mmeisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRCS			= main.c test_bzero.c test_isalpha.c test_isdigit.c
 SRCS			+= test_isalnum.c test_isascii.c test_isprint.c
 SRCS			+= test_tolower.c test_toupper.c test_strlen.c
 SRCS			+= test_puts.c test_strcat.c test_memcpy.c test_memset.c
-SRCS			+= test_strdup.c
+SRCS			+= test_strdup.c test_hard_loop.c
 
 INCS_PATHS		= ./incs/
 INCS			= $(addprefix -I,$(INCS_PATHS))
