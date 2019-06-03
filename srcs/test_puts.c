@@ -41,6 +41,8 @@ char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *st
 	 *  Repeat the operation with ft_puts and puts, compare outputs
 	 */
 	int		pi[2];
+	size_t	index;
+	ssize_t	ret;
 	char	buffer[test_size + 10];
 	char	*str = NULL;
 
@@ -57,7 +59,18 @@ char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *st
 		/* father */
 		bzero(buffer, test_size + 10);
 		close(pi[1]);
-		read(pi[0], buffer, test_size + 9);
+		index = 0;
+
+		while ((ret = read(pi[0], buffer + index, (test_size + 9) - index)) > 0)
+		{
+			index += ret;
+			if (index >= test_size + 9)
+			{
+				// At this point there is an error
+				break ;
+			}
+		}
+		buffer[index + 1] = 0;
 		close(pi[0]);
 		str = strdup(buffer);
 	}
