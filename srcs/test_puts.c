@@ -40,12 +40,13 @@ char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *st
 	 *  writes.
 	 *  Repeat the operation with ft_puts and puts, compare outputs
 	 */
+	pid_t	pid;
 	int		pi[2];
 	char	buffer[test_size + 10];
 	char	*str = NULL;
 
 	pipe(pi);
-	if (fork() == 0) {
+	if ((pid = fork()) == 0) {
 		/* child */
 		close(pi[0]);
 		dup2(pi[1], 1);
@@ -57,6 +58,7 @@ char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *st
 		/* father */
 		bzero(buffer, test_size + 10);
 		close(pi[1]);
+		waitpid(pid, NULL, 0);
 		read(pi[0], buffer, test_size + 9);
 		close(pi[0]);
 		str = strdup(buffer);
