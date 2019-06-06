@@ -1,6 +1,9 @@
 
+#include <sys/wait.h>
+#include <signal.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -44,6 +47,7 @@ char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *st
 	int		pi[2];
 	char	buffer[test_size + 10];
 	char	*str = NULL;
+	int		status;
 
 	pipe(pi);
 	if ((pid = fork()) == 0) {
@@ -58,10 +62,15 @@ char	*get_puts(char *test, unsigned long test_size, int (*p_puts)(const char *st
 		/* father */
 		bzero(buffer, test_size + 10);
 		close(pi[1]);
-		waitpid(pid, NULL, 0);
-		read(pi[0], buffer, test_size + 9);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status)) {
+			read(pi[0], buffer, test_size + 9);
+			str = strdup(buffer);
+		}
+		else if (WIFSIGNALED(status)) {
+			asprintf(&str, "\033[032m[SIGNALED]\033[0m (%d - %s)", WTERMSIG(status), strsignal(WTERMSIG(status)));
+		}
 		close(pi[0]);
-		str = strdup(buffer);
 	}
 	return str;
 }
