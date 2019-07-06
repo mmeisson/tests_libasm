@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mmeisson <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/28 14:28:00 by mmeisson          #+#    #+#              #
-#    Updated: 2019/05/22 15:52:29 by mmeisson         ###   ########.fr        #
+#    Updated: 2019/07/06 09:15:10 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ all: $(NAME) test_cat
 test_cat:
 	$(CC) $^ -o test_cat $(LDFLAGS) test_cat.c
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) ../libfts.a
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(OBJS_PATH)%.o: $(SRCS_PATHS)%.c Makefile
