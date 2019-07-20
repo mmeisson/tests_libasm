@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mmeisson <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/08/28 14:28:00 by mmeisson          #+#    #+#              #
-#    Updated: 2019/05/22 15:52:29 by mmeisson         ###   ########.fr        #
+#    Updated: 2019/07/06 09:45:55 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,27 +39,30 @@ LIBS			= $(addprefix -L,$(LIB_PATHS))
 
 LDFLAGS			= $(LIBS) -lfts
 
-
+.PHONY: all
 all: $(NAME) test_cat
 
-test_cat:
-	$(CC) $^ -o test_cat $(LDFLAGS) test_cat.c
+test_cat: ../libfts.a
+	$(CC) test_cat.c -o test_cat $(LDFLAGS)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) ../libfts.a
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 $(OBJS_PATH)%.o: $(SRCS_PATHS)%.c Makefile
 	@mkdir -p $(OBJS_PATH)
 	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
 
+.PHONY: clean
 clean:
 	rm -rf $(OBJS_PATH)
 
+.PHONY: fclean
 fclean:
 	rm -rf $(OBJS_PATH)
 	rm -f $(NAME)
 	rm -f test_cat
 
+.PHONY: re
 re: fclean all
 
 -include $(DEPS)
